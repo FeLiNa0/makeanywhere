@@ -1,0 +1,49 @@
+#!/bin/bash
+ABOUT="Run make from any subdirectory of a directory with a Makefile."
+
+MAKEA_DEBUG_OUTPUT="${MAKEA_DEBUG_OUTPUT-false}"
+MAKEA_ITERATIONS="${MAKEA_ITERATIONS-0}"
+MAKEA_MAX_ITERATIONS="${MAKEA_MAX_ITERATIONS-10}"
+
+help() {
+  echo "USAGE: $0 [-h|--help|make arguments]"
+  echo "  $ABOUT"
+}
+
+log() {
+  echo "$@" >&2
+}
+
+debug() {
+  if [ "$MAKEA_DEBUG_OUTPUT" = true ]; then
+    log "$@"
+  fi
+}
+
+if [ "$#" = 1 ] && { [ "$1" = "-h" ] || [ "$1" = "--help" ]; }; then
+  help
+  exit 0
+fi
+
+if [ "$MAKEA_ITERATIONS" -gt "$MAKEA_MAX_ITERATIONS" ]; then
+  log ERROR Makefile not found. Reached max iterations="$MAKEA_MAX_ITERATIONS"
+  exit 1
+fi
+
+CURRENT_DIR="$PWD"
+
+if [ -f ./Makefile ]; then
+  debug Found a makefile at "$PWD"
+  make "$@"
+else
+  export MAKEA_ITERATIONS="$((MAKEA_ITERATIONS + 1))"
+  debug Makefile not found. Going up. Iterations="$MAKEA_ITERATIONS". Dir="$PWD"
+  cd ..
+  
+  if [ "$CURRENT_DIR" = "$PWD" ]; then
+    log ERROR Makefile not found. Loop detected at dir="$PWD".
+    exit 2
+  fi
+
+  makeanywhere "$@"
+fi
