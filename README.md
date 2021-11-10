@@ -14,6 +14,28 @@ To run a make command from any directory that has a parent directory with a Make
 makeanywhere <MAKE ARGUMENTS>
 ```
 
+### Examples
+
+```
+$ ls
+Makefile src
+$ cd src
+$ makeanywhere test
+<Runs tests while within src/>
+```
+
+If `vim` is setup to change directories to that of the current file,
+you can use this script to run `make` while within any directory of your
+`make` based project.
+
+```
+$ vim src/main.c
+!makeanywhere test
+<Runs tests in vim while within src/>
+!makeanywhere format-fix FILES=%:p
+<Formats this specific file>
+```
+
 ## Installation
 
 1. Download [raw.githubusercontent.com/roguh/gp/main/gp](https://raw.githubusercontent.com/roguh/gp/main/gp).
