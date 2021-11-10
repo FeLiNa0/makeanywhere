@@ -1,0 +1,11 @@
+* Completions with `make` completions in Fish when in subdirectory
+
+Example:
+
+cd tests/
+
+ma ch<TAB>
+
+Should complete to:
+
+ma check
