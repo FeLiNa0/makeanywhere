@@ -4,7 +4,7 @@
 
 ```
 $ makeanywhere --help
-USAGE: /home/hugo/bin/makeanywhere [-h|--help|make arguments]                                            
+USAGE: makeanywhere [-h|--help|make arguments]                                            
   Run make from any subdirectory of a directory with a Makefile.  
 ```
 
